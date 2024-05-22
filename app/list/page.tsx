@@ -1,4 +1,6 @@
 import React from "react";
+import { Person } from "../lib/definitions";
+import Image from "next/image";
 
 async function getData() {
   try {
@@ -17,12 +19,24 @@ async function List() {
   const persons = await getData();
   return (
     <>
-      <div>Lists of person</div>;
-      <ul>
-        {persons.map((person) => (
-          <li key={person.id}>{person.name}</li>
+      <h2 className="text-2xl text-center text-red-700 text-bold">
+        Lists of person
+      </h2>
+
+      <div className="flex justify-center items-center">
+        {persons.map((person: Person) => (
+          <div className="w-1/4" key={person.id}>
+            <Image
+              src={person.image}
+              alt={person.name}
+              width={300}
+              height={300}
+            />
+
+            <div>{person.name}</div>
+          </div>
         ))}
-      </ul>
+      </div>
     </>
   );
 }
