@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Person } from "../lib/definitions";
 import Image from "next/image";
+import Link from "next/link";
 
 function List() {
   // const persons = await getData();
@@ -34,17 +35,23 @@ function List() {
   );
 
   return (
-    <>
+    <div className="p-4 bg-slate-100">
       <h2 className="text-2xl text-center text-red-700 text-bold">
         Lists of person
       </h2>
-      <div>
+      <div className="flex justify-between">
         <input
+          className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           value={searchPerson}
           placeholder="Search person"
           onChange={(e) => setSearchPerson(e.target.value)}
         />
+        <Link href="/login">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 font-bold rounded">
+            Login
+          </button>
+        </Link>
       </div>
       <div className="flex justify-center items-center flex-wrap">
         {filteredPersons.map((person: Person) => (
@@ -60,7 +67,7 @@ function List() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
