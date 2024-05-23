@@ -18,3 +18,13 @@ export type Person = {
   url: string;
   created: string;
 };
+
+export type FormData = {
+  email: string;
+  password: string;
+};
+
+export type Errors = {
+  email: string;
+  password: string;
+};

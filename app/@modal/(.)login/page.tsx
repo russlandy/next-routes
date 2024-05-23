@@ -1,15 +1,16 @@
 "use client";
 
 import Modal from "@/app/components/Modal";
-import { useState } from "react";
+import { Errors, FormData } from "@/app/lib/definitions";
+import { ChangeEvent, FormEvent, useState } from "react";
 import * as Yup from "yup";
 
 export default function Login() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState<Errors>({ email: "", password: "" });
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const schema = Yup.object().shape({
@@ -19,7 +20,7 @@ export default function Login() {
       .min(6, "password must be at least 6 characters"),
   });
 
-  const validate = async (name, value) => {
+  const validate = async (name: string, value: string) => {
     try {
       await schema.validateAt(name, { [name]: value });
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
@@ -28,13 +29,13 @@ export default function Login() {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     await validate(name, value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -43,10 +44,10 @@ export default function Login() {
         setLoading(false);
         setSuccessMessage("Login successful");
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       const validateErrors = {};
-      error.inner.forEach((err) => {
-        validateErrors[err.path] = err.message;
+      error.inner.forEach((err: any) => {
+        validateErrors[err.path as keyof Errors] = err.message;
       });
       setErrors(validateErrors);
       setLoading(false);
@@ -73,6 +74,7 @@ export default function Login() {
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
+                name="email"
               />
               {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
@@ -87,13 +89,19 @@ export default function Login() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
+                name="password"
                 placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
               />
+              {errors.password && (
+                <p className="text-red-500">{errors.password}</p>
+              )}
             </div>
             <div className="flex items-center justify-between">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
+                type="submit"
               >
                 Login
               </button>
