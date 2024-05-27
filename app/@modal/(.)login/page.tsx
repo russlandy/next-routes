@@ -17,7 +17,7 @@ export default function Login() {
     email: Yup.string().email("invalid email").required("email is required"),
     password: Yup.string()
       .required("password is required")
-      .min(6, "password must be at least 6 characters"),
+      .min(8, "password must be at least 8 characters"),
   });
 
   const validate = async (name: string, value: string) => {
