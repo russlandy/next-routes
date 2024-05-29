@@ -45,7 +45,7 @@ export default function Login() {
         setSuccessMessage("Login successful");
       }, 2000);
     } catch (error: any) {
-      const validateErrors = {};
+      const validateErrors: Errors = {};
       error.inner.forEach((err: any) => {
         validateErrors[err.path as keyof Errors] = err.message;
       });
